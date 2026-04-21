@@ -3,7 +3,7 @@ package co.edu.poli.insumoagricola.servicios;
 import co.edu.poli.insumoagricola.model.InsumoAgricola;
 
 /**
- * Interfaz que define las operaciones de persistencia de objetos InsumoAgricola.
+ * Aca se define una de las operaciones para InsumoAgricola.
  */
 public interface OperacionArchivo {
 

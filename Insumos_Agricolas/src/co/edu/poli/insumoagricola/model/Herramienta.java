@@ -3,7 +3,7 @@ package co.edu.poli.insumoagricola.model;
 import java.io.Serializable;
 
 /**
- * Representa una herramienta agrícola, especialización de InsumoAgricola.
+ * Herramientas que pueden servir en el ambito agricola
  */
 public class Herramienta extends InsumoAgricola implements Serializable {
 

@@ -3,8 +3,7 @@ package co.edu.poli.insumoagricola.model;
 import java.io.Serializable;
 
 /**
- * Clase abstracta que representa un insumo agrícola genérico
- * dentro del sistema de inventario de la Finca El Naranjo.
+ * Esta clase la dejamos abstracta para que todas nuestras subclases tuvieran siempre los metodos que consideramos necesarios.
  */
 public abstract class InsumoAgricola implements Serializable {
 

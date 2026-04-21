@@ -3,7 +3,7 @@ package co.edu.poli.insumoagricola.model;
 import java.io.Serializable;
 
 /**
- * Representa un pesticida agrícola, especialización de InsumoAgricola.
+ * Aca tenemos cualquier pesticida que queramos agregar
  */
 public class Pesticida extends InsumoAgricola implements Serializable {
 

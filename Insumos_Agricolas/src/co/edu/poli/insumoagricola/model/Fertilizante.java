@@ -3,7 +3,7 @@ package co.edu.poli.insumoagricola.model;
 import java.io.Serializable;
 
 /**
- * Representa un fertilizante agrícola, especialización de InsumoAgricola.
+ * Cualquier fertilizante se puede agregar
  */
 public class Fertilizante extends InsumoAgricola implements Serializable {
 

@@ -1,7 +1,7 @@
 package co.edu.poli.insumoagricola.model;
 
 /**
- * Representa la finca agrícola que gestiona el inventario de insumos.
+ * La finca es opcional, mas sin embargo la agregamos igualmente
  */
 public class Finca {
 

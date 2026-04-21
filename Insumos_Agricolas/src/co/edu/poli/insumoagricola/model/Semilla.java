@@ -3,8 +3,7 @@ package co.edu.poli.insumoagricola.model;
 import java.io.Serializable;
 
 /**
- * Representa una semilla agrícola, especialización de InsumoAgricola.
- * Extiende InsumoAgricola directamente (no Fertilizante).
+ * Mostramos a la semilla como cualquier semilla que se quiera colocar
  */
 public class Semilla extends InsumoAgricola implements Serializable {
 
