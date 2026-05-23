@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="co.edu.poli.insumoagricolamvc.controlador.InsumoControlador"
+            prefWidth="1000" prefHeight="620"
+            style="-fx-background-color: #f4f4f4;">
+
+    <!-- TÍTULO -->
+    <top>
+        <HBox alignment="CENTER" style="-fx-background-color: #2e7d32; -fx-padding: 12;">
+            <Label text="REGISTRO DE INSUMOS - FINCA EL NARANJO"
+                   style="-fx-text-fill: white; -fx-font-size: 16px; -fx-font-weight: bold;"/>
+        </HBox>
+    </top>
+
+    <!-- CONTENIDO -->
+    <center>
+        <HBox spacing="12" style="-fx-padding: 12;">
+
+            <!-- FORMULARIO IZQUIERDA -->
+            <VBox spacing="7" prefWidth="320"
+                  style="-fx-background-color: white; -fx-padding: 14;
+                         -fx-border-color: #cccccc; -fx-border-radius: 6;
+                         -fx-background-radius: 6;">
+
+                <Label text="Datos del Insumo"
+                       style="-fx-font-weight: bold; -fx-font-size: 13px; -fx-text-fill: #2e7d32;"/>
+                <Separator/>
+
+                <HBox alignment="CENTER_LEFT" spacing="6">
+                    <Label text="Fecha de ingreso:" prefWidth="140"/>
+                    <DatePicker fx:id="dpFechaIngreso" prefWidth="150"/>
+                </HBox>
+                <HBox alignment="CENTER_LEFT" spacing="6">
+                    <Label text="ID:" prefWidth="140"/>
+                    <TextField fx:id="tfId" prefWidth="150" promptText="Ej: F001"/>
+                </HBox>
+                <HBox alignment="CENTER_LEFT" spacing="6">
+                    <Label text="Nombre:" prefWidth="140"/>
+                    <TextField fx:id="tfNombre" prefWidth="150" promptText="Nombre insumo"/>
+                </HBox>
+                <HBox alignment="CENTER_LEFT" spacing="6">
+                    <Label text="Precio:" prefWidth="140"/>
+                    <TextField fx:id="tfPrecio" prefWidth="150" promptText="0.0"/>
+                </HBox>
+                <HBox alignment="CENTER_LEFT" spacing="6">
+                    <Label text="Cantidad:" prefWidth="140"/>
+                    <TextField fx:id="tfCantidad" prefWidth="150" promptText="0"/>
+                </HBox>
+                <HBox alignment="CENTER_LEFT" spacing="6">
+                    <Label text="Tipo:" prefWidth="140"/>
+                    <ComboBox fx:id="cbTipo" prefWidth="150" promptText="Seleccione tipo"/>
+                </HBox>
+                <HBox alignment="CENTER_LEFT" spacing="6">
+                    <Label text="Proveedor:" prefWidth="140"/>
+                    <TextField fx:id="tfProveedor" prefWidth="150" promptText="Proveedor"/>
+                </HBox>
+                <HBox alignment="CENTER_LEFT" spacing="6">
+                    <Label text="Fecha vencimiento:" prefWidth="140"/>
+                    <DatePicker fx:id="dpFechaVencimiento" prefWidth="150"/>
+                </HBox>
+
+                <Separator/>
+
+                <!-- Campos extra dinámicos -->
+                <HBox alignment="CENTER_LEFT" spacing="6">
+                    <Label fx:id="lblExtra1" prefWidth="140" visible="false"/>
+                    <TextField fx:id="tfExtra1" prefWidth="150" visible="false"/>
+                </HBox>
+                <HBox alignment="CENTER_LEFT" spacing="6">
+                    <Label fx:id="lblExtra2" prefWidth="140" visible="false"/>
+                    <TextField fx:id="tfExtra2" prefWidth="150" visible="false"/>
+                </HBox>
+                <HBox alignment="CENTER_LEFT" spacing="6">
+                    <Label fx:id="lblExtra3" prefWidth="140" visible="false"/>
+                    <TextField fx:id="tfExtra3" prefWidth="150" visible="false"/>
+                </HBox>
+
+                <Separator/>
+
+                <!-- Botones CRUD - fila 1 -->
+                <HBox spacing="8" alignment="CENTER">
+                    <Button text="Registrar" onAction="#registrar" prefWidth="130"
+                            style="-fx-background-color: #2e7d32; -fx-text-fill: white; -fx-font-weight: bold;"/>
+                    <Button text="Actualizar" onAction="#actualizar" prefWidth="130"
+                            style="-fx-background-color: #1565c0; -fx-text-fill: white; -fx-font-weight: bold;"/>
+                </HBox>
+                <!-- Botones CRUD - fila 2 -->
+                <HBox spacing="8" alignment="CENTER">
+                    <Button text="Eliminar" onAction="#eliminar" prefWidth="130"
+                            style="-fx-background-color: #c62828; -fx-text-fill: white; -fx-font-weight: bold;"/>
+                    <Button text="Limpiar" onAction="#limpiar" prefWidth="130"
+                            style="-fx-background-color: #757575; -fx-text-fill: white; -fx-font-weight: bold;"/>
+                </HBox>
+
+                <Separator/>
+
+                <!-- Botones Archivo - fila 3 -->
+                <HBox spacing="8" alignment="CENTER">
+                    <Button text="Guardar archivo" onAction="#guardarArchivo" prefWidth="130"
+                            style="-fx-background-color: #e65100; -fx-text-fill: white; -fx-font-weight: bold;"/>
+                    <Button text="Cargar archivo" onAction="#cargarArchivo" prefWidth="130"
+                            style="-fx-background-color: #4a148c; -fx-text-fill: white; -fx-font-weight: bold;"/>
+                </HBox>
+
+            </VBox>
+
+            <!-- TABLA DERECHA -->
+            <VBox spacing="8" HBox.hgrow="ALWAYS"
+                  style="-fx-background-color: white; -fx-padding: 14;
+                         -fx-border-color: #cccccc; -fx-border-radius: 6;
+                         -fx-background-radius: 6;">
+
+                <HBox spacing="8" alignment="CENTER_LEFT">
+                    <Button text="Buscar" onAction="#buscar"
+                            style="-fx-background-color: #2e7d32; -fx-text-fill: white; -fx-font-weight: bold;"/>
+                    <TextField fx:id="tfBuscar" prefWidth="200" promptText="Buscar por nombre o ID..."/>
+                    <Label text="Filtrar por:"/>
+                    <ComboBox fx:id="cbFiltro" prefWidth="130"/>
+                </HBox>
+
+                <TableView fx:id="tablaInsumos" VBox.vgrow="ALWAYS">
+                    <columns>
+                        <TableColumn fx:id="colId"        text="ID"          prefWidth="80"/>
+                        <TableColumn fx:id="colNombre"    text="Nombre"      prefWidth="130"/>
+                        <TableColumn fx:id="colTipo"      text="Tipo"        prefWidth="100"/>
+                        <TableColumn fx:id="colCantidad"  text="Cantidad"    prefWidth="80"/>
+                        <TableColumn fx:id="colFechaV"    text="Fecha venc." prefWidth="110"/>
+                        <TableColumn fx:id="colProveedor" text="Proveedor"   prefWidth="120"/>
+                    </columns>
+                    <placeholder>
+                        <Label text="Sin insumos registrados"/>
+                    </placeholder>
+                </TableView>
+            </VBox>
+        </HBox>
+    </center>
+</BorderPane>

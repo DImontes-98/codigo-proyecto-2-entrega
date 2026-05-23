@@ -10,14 +10,33 @@ import java.util.ArrayList;
 import co.edu.poli.insumoagricola.model.InsumoAgricola;
 
 /**
- * Implementación de las interfaces OperacionCRUD y OperacionArchivo
- * para la gestión de objetos InsumoAgricola.
+ * Implementación de las interfaces {@link OperacionCRUD} y {@link OperacionArchivo}
+ * para la gestión de objetos {@link InsumoAgricola}.
+ * <p>
+ * Administra dos estructuras de datos internas: un arreglo fijo de capacidad 2
+ * y un {@link ArrayList} dinámico que actúa como desbordamiento cuando el arreglo
+ * está lleno. Las operaciones de serialización y deserialización permiten persistir
+ * el estado del arreglo fijo en archivos binarios.
+ * </p>
+ *
+ * @author Equipo de desarrollo
+ * @version 1.0
+ * @see OperacionCRUD
+ * @see OperacionArchivo
+ * @see InsumoAgricola
  */
 public class ImplementacionOperacionCrud implements OperacionCRUD, OperacionArchivo {
 
+    /** Arreglo fijo con capacidad para 2 insumos agrícolas. */
     private InsumoAgricola[] insumo;
+
+    /** Lista dinámica que almacena insumos cuando el arreglo fijo está lleno. */
     private ArrayList<InsumoAgricola> inventario;
 
+    /**
+     * Construye una nueva instancia con el arreglo fijo inicializado en tamaño 2
+     * y el inventario dinámico vacío.
+     */
     public ImplementacionOperacionCrud() {
         insumo = new InsumoAgricola[2];
         inventario = new ArrayList<>();
@@ -25,11 +44,25 @@ public class ImplementacionOperacionCrud implements OperacionCRUD, OperacionArch
 
     /**
      * Retorna el arreglo fijo interno para poder serializarlo desde Principal.
+     *
+     * @return arreglo de {@link InsumoAgricola} de capacidad fija
      */
     public InsumoAgricola[] getInsumo() {
         return insumo;
     }
 
+    /**
+     * {@inheritDoc}
+     * <p>
+     * Valida que el insumo no sea nulo, que su código y nombre no estén vacíos,
+     * que el precio no sea negativo y que no exista un insumo con el mismo código.
+     * Si el arreglo fijo está lleno, el insumo se agrega al inventario dinámico.
+     * </p>
+     *
+     * @param i insumo agrícola a registrar
+     * @return mensaje con prefijo {@code "OK:"} si la operación fue exitosa,
+     *         o con prefijo {@code "ERROR:"} si falló alguna validación
+     */
     @Override
     public String crear(InsumoAgricola i) {
         if (i == null) {
@@ -61,6 +94,16 @@ public class ImplementacionOperacionCrud implements OperacionCRUD, OperacionArch
                "' agregado al inventario dinamico (ArrayList).";
     }
 
+    /**
+     * {@inheritDoc}
+     * <p>
+     * Busca primero en el arreglo fijo y luego en el inventario dinámico.
+     * Imprime un mensaje de error en consola si el código es inválido o no se encuentra.
+     * </p>
+     *
+     * @param codigo código del insumo a consultar
+     * @return el {@link InsumoAgricola} encontrado, o {@code null} si no existe
+     */
     @Override
     public InsumoAgricola consultar(String codigo) {
         if (codigo == null || codigo.trim().isEmpty()) {
@@ -80,6 +123,18 @@ public class ImplementacionOperacionCrud implements OperacionCRUD, OperacionArch
         return null;
     }
 
+    /**
+     * {@inheritDoc}
+     * <p>
+     * Valida que el código y el nuevo insumo no sean nulos ni inválidos.
+     * Busca el insumo primero en el arreglo fijo y luego en el inventario dinámico.
+     * </p>
+     *
+     * @param codigo      código del insumo a modificar
+     * @param nuevoInsumo nuevo objeto {@link InsumoAgricola} con la información actualizada
+     * @return mensaje con prefijo {@code "OK:"} si la operación fue exitosa,
+     *         o con prefijo {@code "ERROR"} si falló alguna validación o no se encontró el insumo
+     */
     @Override
     public String modificar(String codigo, InsumoAgricola nuevoInsumo) {
         if (codigo == null || codigo.trim().isEmpty()) {
@@ -115,6 +170,17 @@ public class ImplementacionOperacionCrud implements OperacionCRUD, OperacionArch
         return "ERROR modificar: No existe insumo con codigo " + codigo;
     }
 
+    /**
+     * {@inheritDoc}
+     * <p>
+     * Establece la posición del arreglo fijo en {@code null} al eliminar,
+     * o remueve el elemento del inventario dinámico según corresponda.
+     * </p>
+     *
+     * @param codigo código del insumo a eliminar
+     * @return mensaje con prefijo {@code "OK:"} si la operación fue exitosa,
+     *         o con prefijo {@code "ERROR"} si el código es inválido o no se encontró el insumo
+     */
     @Override
     public String eliminar(String codigo) {
         if (codigo == null || codigo.trim().isEmpty()) {
@@ -143,6 +209,16 @@ public class ImplementacionOperacionCrud implements OperacionCRUD, OperacionArch
         return "ERROR eliminar: No existe insumo con codigo " + codigo;
     }
 
+    /**
+     * {@inheritDoc}
+     * <p>
+     * Genera una cadena con el contenido del arreglo fijo y del inventario dinámico,
+     * indicando las posiciones vacías del arreglo y la cantidad de elementos en el
+     * {@link ArrayList}.
+     * </p>
+     *
+     * @return cadena con el inventario completo de insumos agrícolas
+     */
     @Override
     public String listar() {
         StringBuilder sb = new StringBuilder();
@@ -181,10 +257,32 @@ public class ImplementacionOperacionCrud implements OperacionCRUD, OperacionArch
         return sb.toString();
     }
 
+    /**
+     * Agrega un insumo agrícola al inventario dinámico ({@link ArrayList}).
+     * <p>
+     * Se invoca automáticamente desde {@link #crear(InsumoAgricola)} cuando
+     * el arreglo fijo ya está lleno.
+     * </p>
+     *
+     * @param i insumo agrícola a agregar al inventario dinámico
+     */
     public void expandirInventario(InsumoAgricola i) {
         inventario.add(i);
     }
 
+    /**
+     * {@inheritDoc}
+     * <p>
+     * Utiliza serialización de objetos Java ({@link ObjectOutputStream}) para
+     * escribir el arreglo en un archivo binario en la ruta y nombre especificados.
+     * </p>
+     *
+     * @param insumos arreglo de {@link InsumoAgricola} a persistir
+     * @param path    ruta del directorio donde se guardará el archivo
+     * @param name    nombre del archivo de salida
+     * @return mensaje con prefijo {@code "OK:"} indicando la ruta del archivo creado,
+     *         o con prefijo {@code "ERROR al serializar:"} si ocurre una excepción
+     */
     @Override
     public String serializar(InsumoAgricola[] insumos, String path, String name) {
         try (FileOutputStream fos = new FileOutputStream(path + name);
@@ -196,6 +294,19 @@ public class ImplementacionOperacionCrud implements OperacionCRUD, OperacionArch
         }
     }
 
+    /**
+     * {@inheritDoc}
+     * <p>
+     * Utiliza deserialización de objetos Java ({@link ObjectInputStream}) para
+     * recuperar el arreglo desde el archivo binario. El arreglo interno
+     * {@code insumo} se actualiza con los datos recuperados.
+     * </p>
+     *
+     * @param path ruta del directorio donde se encuentra el archivo
+     * @param name nombre del archivo a leer
+     * @return arreglo de {@link InsumoAgricola} recuperado del archivo,
+     *         o {@code null} si ocurre un {@link IOException} o {@link ClassNotFoundException}
+     */
     @Override
     public InsumoAgricola[] deserializar(String path, String name) {
         try (FileInputStream fis = new FileInputStream(path + name);
@@ -209,6 +320,16 @@ public class ImplementacionOperacionCrud implements OperacionCRUD, OperacionArch
         }
     }
 
+    /**
+     * Verifica si ya existe un insumo con el código indicado en alguna de las
+     * dos estructuras de datos internas.
+     * <p>
+     * La comparación es insensible a mayúsculas y minúsculas.
+     * </p>
+     *
+     * @param codigo código a verificar
+     * @return {@code true} si ya existe un insumo con ese código; {@code false} en caso contrario
+     */
     private boolean duplicado(String codigo) {
         for (InsumoAgricola a : insumo) {
             if (a != null && a.getCodigo().equalsIgnoreCase(codigo)) return true;
